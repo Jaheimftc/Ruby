@@ -1,9 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class RubyController : MonoBehaviour
 {
+
+    
+    public TMP_Text gameOverText;
+    public GameObject background;
+
+    public int score = 0;
+    public TMP_Text scoreText;
+
+    public ParticleSystem HealthDecrease;
+    public ParticleSystem HealthIncrease;
+
 
     public float speed = 3.0f;
 
@@ -83,6 +96,34 @@ public class RubyController : MonoBehaviour
                 }
             }
         }
+
+        if (score == 3)
+        {
+            speed = 0.0f;
+            background.SetActive(true);
+            gameOverText.enabled = true;
+            //gameOverText.SetActive(true);
+            gameOverText.text = "You Win! Press R to Play Again!";
+
+            if (Input.GetKey(KeyCode.R))
+            {
+                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // this loads the currently active scene
+            }
+        }
+
+        if (currentHealth == 0)
+        {
+            speed = 0.0f;
+            background.SetActive(true);
+            gameOverText.enabled = true;
+            //gameOverText.SetActive(true);
+            gameOverText.text = "You lost! Press R to Restart!";
+
+            if (Input.GetKey(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // this loads the currently active scene
+            }
+        }
     }
 
     void FixedUpdate()
@@ -108,6 +149,7 @@ public class RubyController : MonoBehaviour
             isInvincible = true;
             invincibleTimer = timeInvincible;
 
+            // Instantiate(HealthDecrease, new Vector2(0.0f, 0.0f), Quaternion.identity);
             PlaySound(hitSound);
         }
 
@@ -131,5 +173,14 @@ public class RubyController : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
+    }
+
+    public void ChangeScore(int scoreAmount)
+    {
+
+        score += scoreAmount;
+        scoreText.text = "Robots Fixed: " + score.ToString();
+
+
     }
 }

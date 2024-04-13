@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+
+    private RubyController rubyController;
+
     public float speed;
     public bool vertical;
     public float changeTime = 3.0f;
@@ -23,6 +26,12 @@ public class EnemyController : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         timer = changeTime;
         animator = GetComponent<Animator>();
+
+        GameObject rubyControllerObject = GameObject.FindWithTag("RubyController");
+        if (rubyControllerObject != null)
+        {
+            rubyController = rubyControllerObject.GetComponent<RubyController>();
+        }
     }
 
     void Update()
@@ -40,6 +49,10 @@ public class EnemyController : MonoBehaviour
             direction = -direction;
             timer = changeTime;
         }
+
+        
+        
+
     }
 
     void FixedUpdate()
@@ -87,6 +100,18 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Fixed");
 
         smokeEffect.Stop();
+
+        if (rubyController != null)
+        {
+            rubyController.ChangeScore(1);
+        }
+       
+
+
     }
+
+    
+
+        
 
 }

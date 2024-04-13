@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    
+
+
     Rigidbody2D rigidbody2d;
 
     void Awake()
@@ -23,7 +24,9 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
+
 
     void OnCollisionEnter2D(Collision2D other)
     {
