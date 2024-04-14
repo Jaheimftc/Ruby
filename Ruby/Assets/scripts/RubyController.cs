@@ -14,8 +14,8 @@ public class RubyController : MonoBehaviour
     public int score = 0;
     public TMP_Text scoreText;
 
-    public ParticleSystem HealthDecrease;
-    public ParticleSystem HealthIncrease;
+    public GameObject HealthDecreasePrefab;
+    public GameObject HealthIncreasePrefab;
 
 
     public float speed = 3.0f;
@@ -102,13 +102,8 @@ public class RubyController : MonoBehaviour
             speed = 0.0f;
             background.SetActive(true);
             gameOverText.enabled = true;
-            //gameOverText.SetActive(true);
-            gameOverText.text = "You Win! Press R to Play Again!";
-
-            if (Input.GetKey(KeyCode.R))
-            {
-                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // this loads the currently active scene
-            }
+            gameOverText.text = "You Win! Game Created by Group 8";
+                     
         }
 
         if (currentHealth == 0)
@@ -116,12 +111,11 @@ public class RubyController : MonoBehaviour
             speed = 0.0f;
             background.SetActive(true);
             gameOverText.enabled = true;
-            //gameOverText.SetActive(true);
             gameOverText.text = "You lost! Press R to Restart!";
 
             if (Input.GetKey(KeyCode.R))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // this loads the currently active scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
             }
         }
     }
@@ -148,9 +142,13 @@ public class RubyController : MonoBehaviour
 
             isInvincible = true;
             invincibleTimer = timeInvincible;
-
-            // Instantiate(HealthDecrease, new Vector2(0.0f, 0.0f), Quaternion.identity);
+            GameObject HealthDecreaseObject = Instantiate(HealthDecreasePrefab, transform.position, Quaternion.identity);
             PlaySound(hitSound);
+        }
+
+        if (amount > 0)
+        {
+            GameObject HealthIncreaseObject = Instantiate(HealthIncreasePrefab, transform.position, Quaternion.identity);
         }
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
