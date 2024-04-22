@@ -6,7 +6,8 @@ using TMPro;
 
 public class RubyController : MonoBehaviour
 {
-
+    bool soundplay;
+    bool finishSound;
     
     public TMP_Text gameOverText;
     public GameObject background;
@@ -26,6 +27,9 @@ public class RubyController : MonoBehaviour
 
     public AudioClip throwSound;
     public AudioClip hitSound;
+    public AudioClip winSound;
+    public AudioClip loseSound;
+    public AudioClip footSteps;
 
     public int health { get { return currentHealth; } }
     int currentHealth;
@@ -52,6 +56,8 @@ public class RubyController : MonoBehaviour
         currentHealth = maxHealth;
 
         audioSource = GetComponent<AudioSource>();
+
+        soundplay = false;
     }
 
     // Update is called once per frame
@@ -66,6 +72,7 @@ public class RubyController : MonoBehaviour
         {
             lookDirection.Set(move.x, move.y);
             lookDirection.Normalize();
+                     
         }
 
         animator.SetFloat("Look X", lookDirection.x);
@@ -97,12 +104,18 @@ public class RubyController : MonoBehaviour
             }
         }
 
-        if (score == 3)
+        if (score == 6)
         {
             speed = 0.0f;
             background.SetActive(true);
             gameOverText.enabled = true;
             gameOverText.text = "You Win! Game Created by Group 8";
+            if (!soundplay)
+            {
+                PlaySound(winSound);
+                soundplay = true;
+            }
+            
                      
         }
 
@@ -112,6 +125,12 @@ public class RubyController : MonoBehaviour
             background.SetActive(true);
             gameOverText.enabled = true;
             gameOverText.text = "You lost! Press R to Restart!";
+            if (!soundplay)
+            {
+                PlaySound(loseSound);
+                soundplay = true;
+                finishSound = true;
+            }
 
             if (Input.GetKey(KeyCode.R))
             {
@@ -143,7 +162,11 @@ public class RubyController : MonoBehaviour
             isInvincible = true;
             invincibleTimer = timeInvincible;
             GameObject HealthDecreaseObject = Instantiate(HealthDecreasePrefab, transform.position, Quaternion.identity);
-            PlaySound(hitSound);
+            if (!finishSound)
+            {
+                PlaySound(hitSound);
+            }
+            //PlaySound(hitSound);
         }
 
         if (amount > 0)
@@ -181,4 +204,5 @@ public class RubyController : MonoBehaviour
 
 
     }
+
 }

@@ -7,6 +7,11 @@ public class EnemyController : MonoBehaviour
 
     private RubyController rubyController;
 
+    bool soundplay;
+    public AudioClip hitSound;
+    public AudioClip walkSound;
+    AudioSource audioSource;
+
     public float speed;
     public bool vertical;
     public float changeTime = 3.0f;
@@ -32,6 +37,12 @@ public class EnemyController : MonoBehaviour
         {
             rubyController = rubyControllerObject.GetComponent<RubyController>();
         }
+        audioSource = GetComponent<AudioSource>();
+
+        audioSource.clip = walkSound;
+        audioSource.loop = true;
+        audioSource.Play();
+        //PlaySound(walkSound);
     }
 
     void Update()
@@ -99,19 +110,37 @@ public class EnemyController : MonoBehaviour
         //optional if you added the fixed animation
         animator.SetTrigger("Fixed");
 
+       
+
         smokeEffect.Stop();
 
         if (rubyController != null)
         {
             rubyController.ChangeScore(1);
         }
-       
+
+
+        audioSource.Stop();
+        audioSource.PlayOneShot(hitSound);
+        //audioSource.clip = hitSound;
+        //PlaySound(hitSound);
+        //audioSource.Play();
+        //audioSource.Stop();
+
+
+
+
+
+
 
 
     }
 
-    
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
 
-        
+
 
 }
